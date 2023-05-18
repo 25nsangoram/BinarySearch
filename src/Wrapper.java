@@ -2,13 +2,15 @@ public class Wrapper {
     private int number;
     private int width;
     private int height;
+    private String movieTitle;
    // private int x;
    // private int y;
     private boolean hasBeenCompared;
-    public Wrapper(int number, int width, int height){// int x, int y){
+    public Wrapper(int number, int width, int height, String movieTitle){// int x, int y){
         this.width = width;
         this.height = height;
         this.number = number;
+        this.movieTitle = movieTitle;
         //this.x = x;
         //this.y = y;
         hasBeenCompared = false;
@@ -27,7 +29,8 @@ public class Wrapper {
 
        // Main.app.text(number, x, y);
         Main.app.fill(255,255,255);
-        Main.app.text(number , (width/2) +x, (height/2)+y+100);
+        Main.app.text(number, (width/2) +x, (height/2)+y+100);
+        Main.app.text( movieTitle, (width/2) +(x-30), (height/2)+y+120);
 
     }
     public String toString(){
@@ -47,6 +50,9 @@ public class Wrapper {
             return 0;
         }
         return -1;
+    }
+    public String getMovieTitle(){
+        return movieTitle;
     }
     public boolean hasBeenSearched(){
         hasBeenCompared = true;

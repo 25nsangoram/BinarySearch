@@ -1,4 +1,6 @@
 import processing.core.PApplet;
+import processing.data.Table;
+import processing.data.TableRow;
 import java.util.ArrayList;
 public class Main extends PApplet {
     //private int [] bArray = {2,5,25,100};
@@ -11,38 +13,27 @@ public class Main extends PApplet {
     public static Main app;
     private String userInput;
     private int status;
-
     public static void main(String[] args) {
         PApplet.main("Main");
     }
-
     public Main() {//Main's constructor
         super();
         app = this;
     }
-
     public void settings() {
         size(600, 600);
-
     }
-
     public void setup() {
         things = new ArrayList<Wrapper>();
         size = 10;
-        int l = 0;
-        int rand = (int) (Math.random() * 10);
-        while(l < size){
-            things.add(new Wrapper(rand, width / size, 100));
-            rand = (int) (Math.random() * 10);
-            l++;
+        Table table = loadTable("Data/movieRankings.csv", "header");
+        for (TableRow row : table.rows()) {
+            int rank = row.getInt("Rank"); // obtain year data
+            String movieTitle = row.getString("Movie Title"); // obtain quantity
+            things.add(new Wrapper(rank,width/size, 100, movieTitle));
         }
-
-        //for (int i = 0; i < size; i++) {
-            //things.add(new Wrapper(i, width / size, 100, i * (width / size), 0));
-        //}
         reset();
     }
-
     public void draw() {
         background(0, 0, 0);
         stroke(0, 0, 0);
@@ -55,7 +46,7 @@ public class Main extends PApplet {
         }
         fill(255, 255, 255);
         if (status == 0) {
-            text(target + " FOUND AT INDEX: " + mid, width / 2, height / 2);
+            text(target + " FOUND AT INDEX: " + mid + "\n"+ "Movie name: " + things.get(mid).getMovieTitle(), width / 2, height / 2);
         } else if (status == -1) {
 
             text("Searching for: " + target + "\n ITEM NOT FOUND", width / 2, height / 2);
@@ -64,7 +55,6 @@ public class Main extends PApplet {
         } else {
             text("Instructions: CLICK 'n' TO PUT THE LIST IN ORDER \n Input a target value  by pressing number keys\n and hit return to start the search. \n Press the 's' key to search \n and the 'r' key to reset.", width / 3, height / 2);
         }
-
     }
     private void selectionSort(ArrayList <Wrapper> thingOne) {
         for (int curIndex = 0; curIndex < thingOne.size() - 1; curIndex++) {
@@ -74,7 +64,6 @@ public class Main extends PApplet {
         for(Wrapper i: thingOne){
             System.out.print(i);
         }
-
     }
     private int findMin(ArrayList <Wrapper> thingTwo, int startingIndex) {
         int minIndex = startingIndex;
@@ -90,8 +79,6 @@ public class Main extends PApplet {
         thingThree.set(x, thingThree.get(y));
         thingThree.set(y,temp);
     }
-
-
     //
     private int binarySearch() {
         if(low<=high){
@@ -114,9 +101,6 @@ public class Main extends PApplet {
 
         }
     }
-    //private int integer(){
-
-    //}
     public void keyPressed(){
         if(key =='s'){
             status = binarySearch();
@@ -142,6 +126,8 @@ public class Main extends PApplet {
         high = things.size()-1;
         mid = (low+high)/2;
         userInput = "";
-
+    }
+    public void mouseClicked(){
+        //redraw();
     }
 }
